@@ -12,6 +12,8 @@ public class TicketMapper implements RowMapper<Ticket> {
         return Ticket.builder()
                 .id(rs.getInt("id"))
                 .customerAge(rs.getInt("customer_age"))
+                .customerName(rs.getString("customer_name"))
+                .customerEmail(rs.getString("customer_email"))
                 .customerGender(rs.getString("customer_gender"))
                 .customerSatisfactionRating(rs.getDouble("customer_satisfaction_rating"))
                 .productPurchased(rs.getString("product_purchased"))

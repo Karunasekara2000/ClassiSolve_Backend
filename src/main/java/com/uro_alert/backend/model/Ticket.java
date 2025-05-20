@@ -17,6 +17,8 @@ public class Ticket {
 
     private int id;
     private int customerAge;
+    private String customerName;
+    private String customerEmail;
     private String customerGender;
     private double customerSatisfactionRating;
     private String productPurchased;

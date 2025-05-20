@@ -16,14 +16,9 @@ import java.time.LocalDateTime;
 @Setter
 @SuperBuilder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AssignTicketDto {
+public class TicketStatus {
 
     private int ticketId;
-    private String ticketSubject;
-    private String resolutionTime;
-    private String customerName;
-    private String customerEmail;
-    private LocalDateTime assignedAt;
     private String status;
 
 }

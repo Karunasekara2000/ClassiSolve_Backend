@@ -3,8 +3,10 @@ package com.uro_alert.backend.repository;
 import com.uro_alert.backend.model.AssignTicket;
 import com.uro_alert.backend.model.AssignTicketDto;
 import com.uro_alert.backend.model.Ticket;
+import com.uro_alert.backend.model.TicketStatus;
 import com.uro_alert.backend.model.mapper.AssignTicketDtoMapper;
 import com.uro_alert.backend.model.mapper.TicketMapper;
+import com.uro_alert.backend.model.mapper.TicketStatusMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -39,7 +41,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     public AssignTicket saveAssignment(AssignTicket assignTicket) {
 
 
-        StringBuilder query = new StringBuilder("INSERT INTO ticket_assignments (ticket_id, employee_id, ticket_subject, assigned_at) VALUES (?, ?, ?, ?)");
+        StringBuilder query = new StringBuilder("INSERT INTO ticket_assignments (ticket_id, employee_id, ticket_subject, predicted_time, customer_name, customer_email, assigned_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
         KeyHolder key = new GeneratedKeyHolder();
 
@@ -48,7 +50,10 @@ public class TicketRepositoryImpl implements TicketRepository {
             ps.setInt(1, assignTicket.getTicketId());
             ps.setInt(2, assignTicket.getEmployeeId());
             ps.setString(3, assignTicket.getTicketSubject());
-            ps.setTimestamp(4, Timestamp.valueOf(assignTicket.getAssignedAt()));
+            ps.setString(4, assignTicket.getResolutionTime());
+            ps.setString(5, assignTicket.getCustomerName());
+            ps.setString(6, assignTicket.getCustomerEmail());
+            ps.setTimestamp(7, Timestamp.valueOf(assignTicket.getAssignedAt()));
             return ps;
         }, key);
 
@@ -61,11 +66,23 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public List<AssignTicketDto> getAssignedTicketsByEmployeeId(int employeeId) {
-        StringBuilder query = new StringBuilder("SELECT ticket_id, ticket_subject, assigned_at FROM ticket_assignments WHERE employee_id = :employeeId");
+        StringBuilder query = new StringBuilder("SELECT ticket_id, ticket_subject, predicted_time, customer_name, customer_email, assigned_at, status FROM ticket_assignments WHERE employee_id = :employeeId");
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("employeeId", employeeId);
 
         return namedParameterJdbcTemplate.query(query.toString(), params, new AssignTicketDtoMapper());
+    }
+
+    @Override
+    public void updateStatus(int ticketId, String status) {
+        String sql = "UPDATE ticket_assignments SET status = ? WHERE ticket_id = ?";
+        jdbcTemplate.update(sql, status, ticketId);
+    }
+
+    @Override
+    public List<TicketStatus> getTicketStatus() {
+        StringBuilder query = new StringBuilder("SELECT ticket_id, status FROM ticket_assignments");
+        return namedParameterJdbcTemplate.query(query.toString(), new TicketStatusMapper());
     }
 }

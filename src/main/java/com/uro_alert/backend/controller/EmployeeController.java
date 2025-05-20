@@ -37,8 +37,8 @@ public class EmployeeController {
     @GetMapping("/assignees/by-type/{ticketType}")
     public List<Employee> getAssigneesByTicketType(@PathVariable String ticketType) {
         List<Employee> all = employeeService.getEmployeesByTicketType(ticketType);
-        Collections.shuffle(all); // To randomize
-        return all.size() > 3 ? all.subList(0, 3) : all;
+        Collections.shuffle(all);
+        return all.size() > 5 ? all.subList(0, 5) : all;
     }
 
     @PostMapping("/assign")

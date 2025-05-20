@@ -22,5 +22,8 @@ public class AssignTicket {
     private int ticketId;
     private int employeeId;
     private String ticketSubject;
+    private String resolutionTime;
+    private String customerName;
+    private String customerEmail;
     private LocalDateTime assignedAt;
 }

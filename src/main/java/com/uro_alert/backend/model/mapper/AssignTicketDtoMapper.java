@@ -17,7 +17,11 @@ public class AssignTicketDtoMapper implements RowMapper<AssignTicketDto> {
         return AssignTicketDto.builder()
                 .ticketId(rs.getInt("ticket_id"))
                 .ticketSubject(rs.getString("ticket_subject"))
+                .resolutionTime(rs.getString("predicted_time"))
+                .customerName(rs.getString("customer_name"))
+                .customerEmail(rs.getString("customer_email"))
                 .assignedAt(LocalDateTime.parse(rs.getString("assigned_at"), formatter))
+                .status(rs.getString("status"))
                 .build();
     }
 }

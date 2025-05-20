@@ -3,6 +3,7 @@ package com.uro_alert.backend.service;
 import com.uro_alert.backend.model.AssignTicket;
 import com.uro_alert.backend.model.AssignTicketDto;
 import com.uro_alert.backend.model.Ticket;
+import com.uro_alert.backend.model.TicketStatus;
 import com.uro_alert.backend.repository.TicketRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,14 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<AssignTicketDto> getAssignedTicketsByEmployeeId(int employeeId) {
         return ticketRepository.getAssignedTicketsByEmployeeId(employeeId);
+    }
+
+    public void updateStatus(int ticketId, String status) {
+        ticketRepository.updateStatus(ticketId, status);
+    }
+
+    @Override
+    public List<TicketStatus> getTicketStatus() {
+        return ticketRepository.getTicketStatus();
     }
 }
